@@ -1,4 +1,4 @@
-aconst yts = require("yt-search");
+const yts = require("yt-search");
 const config = require("@configuration");
 const { Markup } = require("telegraf");
 const chalk = require("chalk");
