@@ -1,4 +1,4 @@
-const yts = require("yt-search");
+aconst yts = require("yt-search");
 const config = require("@configuration");
 const { Markup } = require("telegraf");
 const chalk = require("chalk");
@@ -154,7 +154,7 @@ Masih Lengkap Tapi Mau Bagaimana Lagi Ini Versi Simple Case :v`;
 
         case "owner": {
              try {
-                 for (let num of config.owner) {
+                 for (let num of config.telegram.owner) {
                      await ctx.replyWithContact(
                           "+" + num,
                          config.ownername2, {
@@ -237,36 +237,6 @@ Masih Lengkap Tapi Mau Bagaimana Lagi Ini Versi Simple Case :v`;
             }
             break;
 
-        case "cases": {
-           if (!isOwner) return m.reply(config.messages.owner);
-
-           let cap = "*– 乂 **Cara Penggunaan Fitur Case***\n";
-           cap += "*➕ `--add`* untuk menambah fitur case baru\n";
-           cap += "*🔄 `--get`* untuk mengambil fitur case yang ada\n";
-           cap += "*❌ `--delete`* untuk menghapus fitur case\n";
-           cap += "\n*– 乂 **Daftar Case yang Tersedia** :*\n";
-           cap += Case.list().map((a, i) => `> *${i + 1}.* ${a}`).join("\n");
-
-           if (!args) return m.reply(cap);
-
-           if (args.includes("--add")) {
-              if (!m.quoted) return m.reply("> *⚠️ Balas dengan fitur case yang ingin disimpan*.");
-              let status = Case.add(m.quoted.text);
-              m.reply(status ? "> *✅ Berhasil menambahkan case baru!*" : "> *❌ Gagal menambahkan case baru*.");
-           } else if (args.includes("--delete")) {
-             let input = args.replace("--delete", "").trim();
-             if (!input) return m.reply("> *⚠️ Masukkan nama case yang ingin dihapus*!");
-             let status = Case.delete(input);
-             m.reply(status ? `> *✅ Berhasil menghapus case: ${input}!*` : `> *❌ Case ${input} tidak ditemukan. Periksa daftar case yang tersedia*.`);
-           } else if (args.includes("--get")) {
-             let input = args.replace("--get", "").trim();
-             if (!input) return m.reply("> *⚠️ Masukkan nama case yang ingin diambil*!");
-             if (!Case.list().includes(input)) return m.reply("> *❌ Case tidak ditemukan!*");
-             let status = Case.get(input);
-             m.reply(status ? status : `> *❌ Case ${input} tidak ditemukan. Periksa daftar case yang tersedia*.`);
-          }
-        }
-        break;
     default:
     if (isCommand) {
         await ctx.reply("Perintah tidak dikenal.");
