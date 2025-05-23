@@ -6,7 +6,7 @@
  *  ═══🔥≪ 業火 ≫🔥═══
 **/
 
-(async () => {
+  require("module-alias/register")
   const {
     default: makeWASocket,
     useMultiFileAuthState,
@@ -76,24 +76,26 @@
       rl.question(text, resolve);
     });
   };
-  global.db = new Database(config.database + ".json");
-  await db.init();
+  async function initializeSystem() {
+     global.db = new Database(config.database + ".json");
+     await db.init();
 
-  global.pg = new (await require(process.cwd() + "/lib/plugins"))(
-    process.cwd() + "/plugins",
-  );
-  await pg.watch();
+     global.pg = new (await require(process.cwd() + "/lib/plugins"))(
+       process.cwd() + "/plugins",
+     );
+     await pg.watch();
 
-  global.scraper = new (await require(process.cwd() + "/scrapers"))(
-    process.cwd() + "/scrapers/src",
-  );
-  await scraper.watch();
+     global.scraper = new (await require(process.cwd() + "/scrapers"))(
+       process.cwd() + "/scrapers/src",
+     );
+     await scraper.watch();
 
-  setInterval(async () => {
-    await db.save();
-    await pg.load();
-    await scraper.load();
-  }, 2000);
+     setInterval(async () => {
+       await db.save();
+       await pg.load();
+       await scraper.load();
+     }, 2000);
+  }
 
   global.axios = axios;
   global.fs = fs;
@@ -481,6 +483,18 @@
       }
     });
     return sock;
+}
+
+const services = {
+  whatsapp: () => {
+    initializeSystem();
+    system();
+  },
+  telegram: () => require('./telegram/index.js'),
+}
+
+ for (const service in services) {
+  if (config.bot[service]) {
+    services[service]()
   }
-  system();
-})();
+}
