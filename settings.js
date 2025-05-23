@@ -32,6 +32,15 @@ const config = {
     link: {
      tt: "https://www.tiktok.com/@leooxzy_ganz/"
     },
+    bot: {
+      whatsapp: true,
+      telegram: false
+    },
+    telegram: {
+      token: 'tokenlu',
+      owner_id: '',
+      owner: ['']
+    },
     sticker: {
       packname: "〆 Rin-Kun",
       author: "By: Deku/Dxyz 〆"
