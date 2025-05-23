@@ -174,7 +174,11 @@ module.exports = async (m, sock, store) => {
             try {
                 cmdd = await plugin.command.includes(m.command.toLowerCase())
             } catch (e) {
+              try {
                 cmdd = await plugin.command.test(m.command)
+              } catch (e) {
+                cmdd = null
+              }
             };
 
             const cmd = isPrefix ?
