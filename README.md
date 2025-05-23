@@ -32,20 +32,29 @@
 ## ⚙️ Config.js
 
 ```javascript
+const fs = require('node:fs');
+
+const ftpick = [
+  "https://files.catbox.moe/118nmm.jpg",
+  "https://files.catbox.moe/r5h96m.jpg",
+  "https://files.catbox.moe/cwe31b.jpg"
+]
+const geturl = ftpick[Math.floor(Math.random() * ftpick.length)]
+
 const config = {
-    owner: ["6282172589188"],
+    owner: ["6283136099660"],
     name: "Rin-Kun",
     ownername: 'Leooxzy', 
     ownername2: 'Dxyz',
-    image: { url: 'https://i.pinimg.com/1200x/a0/91/28/a09128ba3e6cb7b34f6df2f2c9938410.jpg' }, //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
+    menu: { thumbnailUrl: 'https://files.catbox.moe/8h6ylu.jpg' }, //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
     thumbnail: {
-      thumbnailUrl: 'https://i.pinimg.com/1200x/a0/91/28/a09128ba3e6cb7b34f6df2f2c9938410.jpg'
+      thumbnailUrl: geturl
       //thumbnail: fs.readFileSync('./image/tambahkan-ft-trus-kasih-nama')
     },
-    isQr = false,
+    isQr: false,
     prefix: [".", "?", "!", "/", "#"], //Tambahin sendiri prefix nya kalo kurang
     wagc: [ "https://chat.whatsapp.com/JyeT1hdCPJeLy95tzx5eyI", "https://chat.whatsapp.com/DfffgArbTUu46nqCgmCbE0" ],
-    saluran: '120363279195205552@newsletter', 
+    saluran: '120363401113812327@newsletter', 
     jidgroupnotif: '120363266755712733@g.us', 
     saluran2: '120363335701540699@newsletter', 
     jidgroup: '120363267102694949@g.us', 
@@ -56,6 +65,15 @@ const config = {
     },
     link: {
      tt: "https://www.tiktok.com/@leooxzy_ganz/"
+    },
+    bot: {
+      whatsapp: true,
+      telegram: false
+    },
+    telegram: {
+      token: 'tokenlu',
+      owner_id: '',
+      owner: ['']
     },
     sticker: {
       packname: "〆 Rin-Kun",
@@ -69,7 +87,7 @@ const config = {
       botAdmin: "*( Denied )* Lu siapa bukan Admin group",
       grootbotbup: "*( Denied )* Jadiin Yuta-Botz admin dulu baru bisa akses",
    },
-   database: "hanako-db",
+   database: "rin-db",
    tz: "Asia/Jakarta"
 }
 
