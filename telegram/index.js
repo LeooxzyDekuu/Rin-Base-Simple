@@ -46,7 +46,7 @@ bot.use(async (ctx, next) => {
     }
   };
   
-  m.reply = (text) => ctx.reply(text)
+  m.reply = (text) => ctx.reply(text);
   
   m.download = async () => {
     try {
@@ -77,7 +77,6 @@ bot.use(async (ctx, next) => {
     };
   }
 
-  // Inject `m` ke ctx biar bisa diakses handler
   ctx.m = m;
 
   // Panggil semua handler
@@ -92,6 +91,25 @@ bot.use(async (ctx, next) => {
   }
 
   await next();
+});
+
+
+const callbackPath = path.join(__dirname, "callback");
+fs.readdirSync(callbackPath).forEach(file => {
+  const fullPath = path.join(callbackPath, file);
+  
+  // Hapus cache untuk hot-reload
+  const isCached = require.cache[require.resolve(fullPath)];
+  if (isCached) delete require.cache[require.resolve(fullPath)];
+
+  const cb = require(fullPath);
+
+  if (cb.pattern && typeof cb.handler === "function") {
+    bot.action(cb.pattern, (ctx) => cb.handler(ctx, ctx.match));
+    console.log(`${isCached ? "[UPDATED]" : "[ADDED]"} Callback loaded: ${file}`);
+  } else {
+    console.log(`[SKIPPED] Invalid callback file: ${file}`);
+  }
 });
 
 // Jalankan bot
