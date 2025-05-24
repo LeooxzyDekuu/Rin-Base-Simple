@@ -1,9 +1,6 @@
-// © HanakoBotz
-// • By: Leooxzy - Deku
-// • Owner: 6283136099660
-
-// By: Leooxzy
-// Bio cr: Krz
+// 🔥® Rin-Okumura™ 🔥
+// 👿 Creator: Dxyz
+// ⚡ Plugin: downloader/spotify.mjs
 
 import axios from 'axios';
 import fs from 'fs';
@@ -18,14 +15,16 @@ let handler = async (m, {
     if (!text) throw '⚠️ Masukan Link/Query !'
     if (Func.isUrl(text)) {
         if (!/open.spotify.com/.test(text)) throw '⚠️Mana Link Spotify Nya !';
-        const { metadata: detail } = await Scraper.spotify.download(text);
+        const {
+            metadata: detail
+        } = await Scraper.spotify.download(text);
 
         const caption = `╭───────────────────────────────╮
 │  🔥 RIN'S SPOTIFY DOWNLOADER  │
 ├───────────────────────────────┤
-│ 🎵 ${detail.name || ''}               │
+│ 🎵 ${detail.title || ''}               │
 │ 🎤 ${detail.artist || ''}          │
-│ 💿 ${detail.album_name || ''} │
+│ 💿 ${detail.album || ''} │
 │ 🔗 ${detail.url || ''} │
 ├───────────────────────────────┤
 │ 🗡️ (•̀ᴗ•́)و ︻デ═一            │
@@ -34,8 +33,12 @@ let handler = async (m, {
 ╰───────────────────────────────╯
 "Not bad... for human music." - Rin Okumura`;
         ctx.reply(m.chat, caption, m);
-        const { download: spdl } = await Scraper.spotify.download(detail.url);
-        const media = await axios.get(spdl.file_url, { responseType: 'arraybuffer' });
+        const {
+            download: spdl
+        } = await Scraper.spotify.download(detail.link);
+        const media = await axios.get(spdl, {
+            responseType: 'arraybuffer'
+        });
         await fs.writeFileSync(outputPath, media.data);
         let audio = await fs.readFileSync(outputPath);
 
@@ -45,8 +48,8 @@ let handler = async (m, {
         }, {
             quoted: m
         });
-    await conn.delay(200);
-    await fs.unlinkSync(outputPath);
+        await conn.delay(200);
+        await fs.unlinkSync(outputPath);
     } else {
         const search = await Scraper.spotify.search(text);
         if (!search && !search.length > 0) throw '⚠️ Maaf Lagu Yg Anda Search Tidak Di Temukan';
@@ -56,8 +59,7 @@ let handler = async (m, {
 ├──┬─────────────────────────┤\n`;
         message += search.map((a, i) => `│ [${i + 1}] │ ${a.title} - ${a.artist}           
 │  │ 🔗 ${a.url}
-├──┴─────────────────────────┤`
-).join("\n");
+├──┴─────────────────────────┤`).join("\n");
         message += `\n│ (ง🔥Д🔥)ง︻デ═一 [search.length/50]       
 │ "Hurry up!" - Rin          
 ╰────────────────────────────╯`
