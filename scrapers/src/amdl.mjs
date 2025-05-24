@@ -1,10 +1,12 @@
-const axios = require('axios');
-const { wrapper } = require('axios-cookiejar-support');
-const FormData = require('form-data');
-const WebSocket = require('ws');
-const cheerio = require('cheerio');
-const { CookieJar } = require('tough-cookie');
-const crypto = require('crypto');
+
+
+import axios from 'axios';
+import { wrapper } from 'axios-cookiejar-support';
+import FormData from 'form-data';
+import WebSocket from 'ws';
+import * as cheerio from 'cheerio';
+import { CookieJar } from 'tough-cookie';
+import crypto from 'crypto';
 
 const amdl = {
   api: {
@@ -261,4 +263,4 @@ const amdl = {
   }
 };
 
-module.exports = amdl;
+export default amdl;
