@@ -44,18 +44,6 @@ const toTime = (ms) => {
     return [h, m, s].map((v) => v.toString().padStart(2, "0")).join(":");
 };
 
-const base64EncodingUrl = (trackUrl, trackName, artistName) => {
-    const data = `__/:${trackUrl}:${trackName}:${artistName}`;
-    const base64Encoded = Buffer.from(data).toString('base64');
-    return base64Encoded
-};
-
-const headers = {
-    'Content-Type': 'application/json',
-    'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36',
-    'Referer': 'https://spotify-down.com/'
-};
-
 class Spotify {
     search = async (query, type = "track", limit = 20) => {
         try {
@@ -102,36 +90,15 @@ class Spotify {
             metadata: {},
             download: ''
         }
+        
         return new Promise(async (resolve, reject) => {
-            const config = {
-                method: 'post',
-                url: 'https://spotify-down.com/api/metadata',
-                params: {
-                    link: url
-                },
-                ...headers
-            };
-
-            await axios(config).then(async (metadata) => {
-                const base64EncodedT = await base64EncodingUrl(metadata.data.data.link, metadata.data.data.title, metadata.data.data.artists);
-
+            await axios.get('https://spotifyapi.caliphdev.com/api/info/track', { params: { url: url } }).then(async (metadata) => {
                 result.status = true || false;
                 result.success = 200 || 500;
-                result.metadata = metadata.data.data || {};
-                result.download = await axios.get('https://spotify-down.com/api/download', {
-                    params: {
-                        link: metadata.data.data.link,
-                        n: metadata.data.data.title,
-                        a: metadata.data.data.artists,
-                        t: base64EncodedT,
-                    },
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36',
-                        'Referer': 'https://spotify-down.com/',
-                    },
-                }).then(a => a.data.data.link) || '';
+                result.metadata = metadata.data || {};
+                result.download = `https://spotifyapi.caliphdev.com/api/download/track?url=${metadata.data.url}`;
             });
-
+            
             resolve(result);
         }).catch((e) => {
             reject({
