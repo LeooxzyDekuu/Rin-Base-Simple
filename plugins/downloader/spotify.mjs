@@ -35,7 +35,7 @@ let handler = async (m, {
         ctx.reply(m.chat, caption, m);
         const {
             download: spdl
-        } = await Scraper.spotify.download(detail.link);
+        } = await Scraper.spotify.download(detail.url);
         const media = await axios.get(spdl, {
             responseType: 'arraybuffer'
         });
